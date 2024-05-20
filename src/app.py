@@ -5,6 +5,7 @@ from pytube import YouTube
 from pytube.exceptions import RegexMatchError, AgeRestrictedError
 
 import threading
+import requests
 
 
 def check_youtube_link():
@@ -12,18 +13,20 @@ def check_youtube_link():
     yt_link = yt_link_entry.get()  
     if yt_link:
         try: 
-            # Create a YouTube object
-            yt_object = YouTube(yt_link)
-            download_video(yt_object)
+            download_youtube_video(yt_link)
 
         # TODO: Añadir más control de errores
         except RegexMatchError:
-            messagebox.showerror(message="❌ Invalid YouTube Link, check that it's ok or don't put weird stuff 👺")
+            messagebox.showerror("Error", message="❌ Invalid YouTube Link, check that it's ok or don't put weird stuff 👺")
         except AgeRestrictedError:
             messagebox.showwarning(message="This video is age restricted, please log in to Youtube to download it")
 
 
-def download_video(yt_object):
+def download_youtube_video(yt_link):
+
+    # Create a YouTube object
+    yt_object = YouTube(yt_link)
+
     # Get the highest resolution video stream
     stream = yt_object.streams.get_highest_resolution() 
 
@@ -33,11 +36,21 @@ def download_video(yt_object):
     # Start the download thread 
     download_thread.start() 
 
+    download_progress_status(yt_link)
+
     # Blocks the thread until it ends
     download_thread.join()
 
-    messagebox.showinfo(message="Video Downloaded 🙌")
+    messagebox.showinfo("SUCCESSFULLY", message="Download Complete 🙌")
 
+def download_progress_status(yt_link):
+    print(yt_link)
+    # Making a GET request with stream=True to receive data in chunks
+    response = requests.get(yt_link, stream=True) 
+
+    # Iterating over the response content in chunks
+    for chunk_data in response.iter_content(chunk_size=None):
+        print(chunk_data)
 
 # App frame
 app = tk.Tk() # create a root widget 
