@@ -1,6 +1,6 @@
-import asyncio
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from pytube import YouTube
 from pytube.exceptions import RegexMatchError, AgeRestrictedError
 
@@ -12,10 +12,6 @@ def download_video():
     yt_link = yt_link_entry.get()  
     if yt_link:
         try: 
-            if message_label is not None:
-                message_label.destroy()
-                message_label = None
-
             # Create a YouTube object
             yt_object = YouTube(yt_link)
 
@@ -25,53 +21,46 @@ def download_video():
             # Download the video to the current working directory
             stream.download()
 
-            message_label = tk.Label(root, text="Downloading Video...")
-            message_label.pack()
         # TODO: Añadir más control de errores
         except RegexMatchError:
-            if message_label is not None:
-                message_label.destroy()
-            message_label = tk.Label(root,text="❌ Invalid YouTube URL, check that it's ok or don't put weird stuff 👺")
-        #except AgeRestrictedError:
-            #message_label = tk.Label(root,text=AgeRestrictedError.error_string)
+            messagebox.showerror(message="❌ Invalid YouTube Link, check that it's ok or don't put weird stuff 👺")
+        except AgeRestrictedError:
+            messagebox.showwarning(message="This video is age restricted, please log in to Youtube to download it")
+
 
 # App frame
-root = tk.Tk() # create a root widget 
-root.title("Youtube Downloader")
-root.configure(background="NavajoWhite2")
-root.geometry("500x380") # set starting size of window
-root.maxsize(1000,580)
-
-message_label = tk.Label(root, text="")
-message_label.pack()
+app = tk.Tk() # create a root widget 
+app.title("Youtube Downloader")
+app.configure(background="NavajoWhite2")
+app.geometry("500x380") # set starting size of window
+app.maxsize(1000,580)
 
 # Adding UI elements
-title_box = tk.Label(root, text="Insert a Youtube Link", bg="NavajoWhite2", fg="#000")
+title_box = tk.Label(app, text="Insert a Youtube Link", bg="NavajoWhite2", fg="#000")
 title_box.pack(pady=20)
 title_box.config(font=("Font", 30))
 
 
-yt_link_frame = tk.Frame(root)
+yt_link_frame = tk.Frame(app)
 yt_link_frame.pack()
 
 yt_link_entry = tk.Entry(yt_link_frame, width=50)
 yt_link_entry.pack(ipady=5)
 
-download_complete_label = tk.Label(root, text="")
+download_complete_label = tk.Label(app, text="")
 download_complete_label.pack()
 
 
 # Download Button
-download_button = tk.Button(root, text="Download Video", command=download_video, width=15)
+download_button = tk.Button(app, text="Download Video", command=download_video, width=15)
 download_button.pack(ipady=10, pady=40)
 download_button.config(font=("Font", 15))
 
 
 # ProgressBar
-progress_bar = ttk.Progressbar()
-progress_bar.pack(ipady=50, pady=50)
-progress_bar.step(50)
+progress_bar = ttk.Progressbar(app, length=400)
+progress_bar.pack(pady=50)
 
 
 # Run app
-root.mainloop()
+app.mainloop()
