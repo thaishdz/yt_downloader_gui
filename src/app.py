@@ -4,28 +4,39 @@ from tkinter import messagebox
 from pytube import YouTube
 from pytube.exceptions import RegexMatchError, AgeRestrictedError
 
+import threading
 
-def download_video():
-    global message_label
 
+def check_youtube_link():
     # Get video_link_entry from Entry widget
     yt_link = yt_link_entry.get()  
     if yt_link:
         try: 
             # Create a YouTube object
             yt_object = YouTube(yt_link)
-
-            # Get the highest resolution video stream
-            stream = yt_object.streams.get_highest_resolution() 
-
-            # Download the video to the current working directory
-            stream.download()
+            download_video(yt_object)
 
         # TODO: Añadir más control de errores
         except RegexMatchError:
             messagebox.showerror(message="❌ Invalid YouTube Link, check that it's ok or don't put weird stuff 👺")
         except AgeRestrictedError:
             messagebox.showwarning(message="This video is age restricted, please log in to Youtube to download it")
+
+
+def download_video(yt_object):
+    # Get the highest resolution video stream
+    stream = yt_object.streams.get_highest_resolution() 
+
+    # Create a thread to download the video
+    download_thread = threading.Thread(target=stream.download) 
+
+    # Start the download thread 
+    download_thread.start() 
+
+    # Blocks the thread until it ends
+    download_thread.join()
+
+    messagebox.showinfo(message="Video Downloaded 🙌")
 
 
 # App frame
@@ -49,7 +60,7 @@ yt_link_entry.pack(ipady=5)
 
 
 # Download Button
-download_button = tk.Button(app, text="Download Video", command=download_video, width=15)
+download_button = tk.Button(app, text="Download Video", command=check_youtube_link, width=15)
 download_button.pack(ipady=10, pady=40)
 download_button.config(font=("Font", 15))
 
@@ -57,7 +68,6 @@ download_button.config(font=("Font", 15))
 # ProgressBar
 progress_bar = ttk.Progressbar(app, length=400)
 progress_bar.pack(pady=50)
-
 
 # Run app
 app.mainloop()
