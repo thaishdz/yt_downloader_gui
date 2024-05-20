@@ -31,12 +31,12 @@ def download_video():
 # App frame
 app = tk.Tk() # create a root widget 
 app.title("Youtube Downloader")
-app.configure(background="NavajoWhite2")
-app.geometry("500x380") # set starting size of window
-app.maxsize(1000,580)
+app.configure(background="#912828")
+app.geometry("800x300") # set starting size of window
+app.resizable(False,False) # height, width
 
 # Adding UI elements
-title_box = tk.Label(app, text="Insert a Youtube Link", bg="NavajoWhite2", fg="#000")
+title_box = tk.Label(app, text="Insert a Youtube Link", bg="#eaeaea", fg="#000")
 title_box.pack(pady=20)
 title_box.config(font=("Font", 30))
 
@@ -46,9 +46,6 @@ yt_link_frame.pack()
 
 yt_link_entry = tk.Entry(yt_link_frame, width=50)
 yt_link_entry.pack(ipady=5)
-
-download_complete_label = tk.Label(app, text="")
-download_complete_label.pack()
 
 
 # Download Button
