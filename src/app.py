@@ -5,15 +5,13 @@ from pytube import YouTube
 from pytube.exceptions import RegexMatchError, AgeRestrictedError
 
 import threading
-import requests
-
 
 def check_youtube_link():
     # Get video_link_entry from Entry widget
     yt_link = yt_link_entry.get()  
     if yt_link:
         try: 
-            download_youtube_video(yt_link)
+            download_video(yt_link)
 
         # TODO: Añadir más control de errores
         except RegexMatchError:
@@ -21,8 +19,7 @@ def check_youtube_link():
         except AgeRestrictedError:
             messagebox.showwarning(message="This video is age restricted, please log in to Youtube to download it")
 
-
-def download_youtube_video(yt_link):
+def download_video(yt_link):
 
     # Create a YouTube object
     yt_object = YouTube(yt_link)
@@ -30,27 +27,33 @@ def download_youtube_video(yt_link):
     # Get the highest resolution video stream
     stream = yt_object.streams.get_highest_resolution() 
 
-    # Create a thread to download the video
-    download_thread = threading.Thread(target=stream.download) 
+    progress_bar.place(x=150, y=250, width=400)
+    downloading_label.place(x=240, y=240)
 
-    # Start the download thread 
-    download_thread.start() 
+    # Register Callback handling by pytube and creating progress bar status thread 
+    progress_bar_status_thread = threading.Thread(yt_object.register_on_progress_callback(download_progress_bar_status))
 
-    download_progress_status(yt_link)
+    # Create download video thread 
+    download_video_thread = threading.Thread(target=stream.download) 
 
-    # Blocks the thread until it ends
-    download_thread.join()
+    download_video_thread.start()
+    progress_bar_status_thread.start()
 
-    messagebox.showinfo("SUCCESSFULLY", message="Download Complete 🙌")
 
-def download_progress_status(yt_link):
-    print(yt_link)
-    # Making a GET request with stream=True to receive data in chunks
-    response = requests.get(yt_link, stream=True) 
+def download_progress_bar_status(stream, chunk, bytes_remaining):
+    print("entré")
+    total_bytes = stream.filesize
+    bytes_downloaded = total_bytes - bytes_remaining
+    percent = (bytes_downloaded / total_bytes) * 100
+    progress_bar["value"] = int(percent)
+    text_label = f"{int(percent)}%"
+    downloading_label.configure(text=text_label)
 
-    # Iterating over the response content in chunks
-    for chunk_data in response.iter_content(chunk_size=None):
-        print(chunk_data)
+    if bytes_remaining == 0:
+        messagebox.showinfo("SUCCESSFULLY", message="Download Complete 🙌")
+
+    app.update_idletasks()
+    
 
 # App frame
 app = tk.Tk() # create a root widget 
@@ -74,13 +77,14 @@ yt_link_entry.pack(ipady=5)
 
 # Download Button
 download_button = tk.Button(app, text="Download Video", command=check_youtube_link, width=15)
-download_button.pack(ipady=10, pady=40)
+download_button.pack(ipady=10, pady=20)
 download_button.config(font=("Font", 15))
 
 
 # ProgressBar
-progress_bar = ttk.Progressbar(app, length=400)
-progress_bar.pack(pady=50)
+progress_bar = ttk.Progressbar()
+
+downloading_label = tk.Label(app,text="0%")
 
 # Run app
 app.mainloop()
