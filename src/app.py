@@ -13,7 +13,7 @@ def check_youtube_link():
         try: 
             download_video(yt_link)
 
-        # TODO: Añadir más control de errores
+        # TODO: Add more error options
         except RegexMatchError:
             messagebox.showerror("Error", message="❌ Invalid YouTube Link, check that it's ok or don't put weird stuff 👺")
         except AgeRestrictedError:
@@ -27,8 +27,11 @@ def download_video(yt_link):
     # Get the highest resolution video stream
     stream = yt_object.streams.get_highest_resolution() 
 
-    progress_bar.place(x=150, y=250, width=400)
-    downloading_label.place(x=240, y=240)
+    # Packing labels
+    label_frame.pack(pady=30)
+    progress_bar.place(x=200, y=250, width=400)
+    downloading_text_label.pack(side=tk.LEFT)
+    downloading_percent_label.pack(side=tk.LEFT)
 
     # Register Callback handling by pytube and creating progress bar status thread 
     progress_bar_status_thread = threading.Thread(yt_object.register_on_progress_callback(download_progress_bar_status))
@@ -41,13 +44,12 @@ def download_video(yt_link):
 
 
 def download_progress_bar_status(stream, chunk, bytes_remaining):
-    print("entré")
     total_bytes = stream.filesize
     bytes_downloaded = total_bytes - bytes_remaining
     percent = (bytes_downloaded / total_bytes) * 100
     progress_bar["value"] = int(percent)
     text_label = f"{int(percent)}%"
-    downloading_label.configure(text=text_label)
+    downloading_percent_label.configure(text=text_label)
 
     if bytes_remaining == 0:
         messagebox.showinfo("SUCCESSFULLY", message="Download Complete 🙌")
@@ -59,15 +61,15 @@ def download_progress_bar_status(stream, chunk, bytes_remaining):
 app = tk.Tk() # create a root widget 
 app.title("Youtube Downloader")
 app.configure(background="#912828")
-app.geometry("800x300") # set starting size of window
+app.geometry("800x350") # set starting size of window
 app.resizable(False,False) # height, width
 
 # Adding UI elements
 title_box = tk.Label(app, text="Insert a Youtube Link", bg="#eaeaea", fg="#000")
-title_box.pack(pady=20)
+title_box.pack(pady=30)
 title_box.config(font=("Font", 30))
 
-
+# Youtube link form input
 yt_link_frame = tk.Frame(app)
 yt_link_frame.pack()
 
@@ -83,8 +85,8 @@ download_button.config(font=("Font", 15))
 
 # ProgressBar
 progress_bar = ttk.Progressbar()
-
-downloading_label = tk.Label(app,text="0%")
-
+label_frame = tk.Frame(app)
+downloading_text_label = tk.Label(label_frame, text="Downloading...")
+downloading_percent_label = tk.Label(label_frame,text="0%")
 # Run app
 app.mainloop()
