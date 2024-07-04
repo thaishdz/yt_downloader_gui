@@ -1,31 +1,52 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-from pytube import YouTube
+from functools import partial
+from pytube import YouTube, Stream
 from pytube.exceptions import RegexMatchError, AgeRestrictedError
-
 import threading
 
+def on_paste(event):
+    # Llamamos a check_youtube_link después de 10 milisegundos
+    event.widget.after(10, check_youtube_link)
+    
 def check_youtube_link():
-    # Get video_link_entry from Entry widget
-    yt_link = yt_link_entry.get()  
+    yt_link = app.clipboard_get() 
     if yt_link:
-        try: 
-            download_video(yt_link)
+        try:   
+            global yt           
+            yt = YouTube(yt_link)
+            choose_resolution_label.pack(pady=20)
+            display_resolutions_radio_button(yt.streams.filter(adaptive=True, file_extension="mp4", only_video=True))
 
-        # TODO: Add more error options
         except RegexMatchError:
             messagebox.showerror("Error", message="❌ Invalid YouTube Link, check that it's ok or don't put weird stuff 👺")
         except AgeRestrictedError:
             messagebox.showwarning(message="This video is age restricted, please log in to Youtube to download it")
 
-def download_video(yt_link):
+def display_resolutions_radio_button(streams):
+    global selected_stream
+    selected_stream = tk.StringVar()
+    for stream in streams:
+        radio_button = tk.Radiobutton(
+                                    app, 
+                                    text=stream.resolution, 
+                                    value=stream.resolution,
+                                    variable=selected_stream,
+                                    command=get_selected_stream
+                                    )
+        radio_button.pack()
+    display_download_vide_button()
 
-    # Create a YouTube object
-    yt_object = YouTube(yt_link)
+def get_selected_stream() :
+    return yt.streams.filter(adaptive=True, file_extension="mp4", only_video=True, res=selected_stream).first()
 
-    # Get the highest resolution video stream
-    stream = yt_object.streams.get_highest_resolution() 
+def display_download_vide_button():
+    download_button.pack(ipady=10, pady=20)
+    
+def download_video(): 
+
+    stream = get_selected_stream()
 
     # Packing labels
     label_frame.pack(pady=30)
@@ -33,8 +54,9 @@ def download_video(yt_link):
     downloading_text_label.pack(side=tk.LEFT)
     downloading_percent_label.pack(side=tk.LEFT)
 
+
     # Register Callback handling by pytube and creating progress bar status thread 
-    progress_bar_status_thread = threading.Thread(yt_object.register_on_progress_callback(download_progress_bar_status))
+    progress_bar_status_thread = threading.Thread(yt.register_on_progress_callback(download_progress_bar_status))
 
     # Create download video thread 
     download_video_thread = threading.Thread(target=stream.download) 
@@ -61,11 +83,11 @@ def download_progress_bar_status(stream, chunk, bytes_remaining):
 app = tk.Tk() # create a root widget 
 app.title("Youtube Downloader")
 app.configure(background="#912828")
-app.geometry("800x350") # set starting size of window
+app.geometry("800x450") # set starting size of window
 app.resizable(False,False) # height, width
 
 # Adding UI elements
-title_box = tk.Label(app, text="Insert a Youtube Link", bg="#eaeaea", fg="#000")
+title_box = tk.Label(app, text="Insert a Youtube Link", fg="#fff")
 title_box.pack(pady=30)
 title_box.config(font=("Font", 30))
 
@@ -76,10 +98,14 @@ yt_link_frame.pack()
 yt_link_entry = tk.Entry(yt_link_frame, width=50)
 yt_link_entry.pack(ipady=5)
 
+yt_link_entry.bind("<<Paste>>", on_paste)
+
+# searching label
+choose_resolution_label = tk.Label(app, text="Choose a video resolution: ", fg="#fff")
+choose_resolution_label.config(font=("Font", 15))
 
 # Download Button
-download_button = tk.Button(app, text="Download Video", command=check_youtube_link, width=15)
-download_button.pack(ipady=10, pady=20)
+download_button = tk.Button(app, text="Download Video", command=download_video, width=15)
 download_button.config(font=("Font", 15))
 
 
@@ -88,5 +114,7 @@ progress_bar = ttk.Progressbar()
 label_frame = tk.Frame(app)
 downloading_text_label = tk.Label(label_frame, text="Downloading...")
 downloading_percent_label = tk.Label(label_frame,text="0%")
+
+
 # Run app
 app.mainloop()
