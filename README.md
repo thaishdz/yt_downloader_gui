@@ -16,6 +16,7 @@ TODO: Put the current gui of the application here
 - Learning how __Asynchrony__ works in Python
 - Learning about __threading__ module
 - Learning __good practices__ (PEP8 - Style Guide for Python Code)
+- Reading libraries documentation (yep, I'm not hiding gurl)
 
 ## Why it was blocked? ⛔
 The main reason is because *Pytube* is an obsolete library (not updates since 2021)
