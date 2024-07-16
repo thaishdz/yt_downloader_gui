@@ -17,10 +17,6 @@ def display_progress_bar_status():
     
 
 def update_progress_bar_status(stream, chunk, bytes_remaining): 
-    
-    if bytes_remaining == 0:
-        messagebox.showinfo("SUCCESSFULLY", message="Download Complete")
-
     total_bytes = stream.filesize
     bytes_downloaded = total_bytes - bytes_remaining
     percent = (bytes_downloaded / total_bytes) * 100
@@ -30,26 +26,35 @@ def update_progress_bar_status(stream, chunk, bytes_remaining):
 
     app.update_idletasks() 
 
+    if bytes_remaining == 0:
+        messagebox.showinfo("SUCCESSFULLY", message="Download Complete")
+
 
 def download_video():
     try:
-        display_progress_bar_status()
-        yt = YouTube(yt_link_entry.get())
-        stream = yt.streams.get_highest_resolution()
+        if(yt_link_entry.get()):
+            display_progress_bar_status()
+            yt = YouTube(yt_link_entry.get())
+            # yt.streams.get_hightest_resolution() not working
+            video_audio_stream = yt.streams.filter(progressive=True, file_extension="mp4").order_by('resolution').desc().first()
 
-        # Register Callback handling by pytube and creating progress bar status thread 
-        progress_bar_status_thread = threading.Thread(yt.register_on_progress_callback(update_progress_bar_status))
-        # Create download video thread 
-        download_video_thread = threading.Thread(target=stream.download) 
+            # Register Callback handling by pytube and creating progress bar status thread 
+            progress_bar_status_thread = threading.Thread(yt.register_on_progress_callback(update_progress_bar_status))
+            # Create download video thread 
+            download_video_thread = threading.Thread(target=video_audio_stream.download) 
 
-        download_video_thread.start()
-        progress_bar_status_thread.start()
+            download_video_thread.start()
+            progress_bar_status_thread.start()
 
 
     except RegexMatchError:
         messagebox.showerror("Error", message="❌ Invalid YouTube Link ❌")
     except AgeRestrictedError:
         messagebox.showwarning("Warning", message="This video is age restricted, please log in to Youtube to download it")
+    except RuntimeError:
+        messagebox.showerror("Error", message="Empty input")
+    except Exception as e:
+        messagebox.showerror("Error", f"{e}")
   
 
 # App frame
