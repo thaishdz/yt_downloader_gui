@@ -1,4 +1,4 @@
-![clideo_editor_3b3d8be796cb4196ad87cbec8cfdbaab](https://github.com/user-attachments/assets/d23c9e3b-3e4f-4931-8dd0-5aed7c380251)# YT Downloader with Pytube & Tkinter
+# YT Downloader with Pytube & Tkinter
 __Status : Blocked__ ⛔
 
 ## Why it was blocked?
@@ -16,13 +16,9 @@ One day it works fine, the next it doesn't
 - Learning __good practices__ (PEP8 - Style Guide for Python Code)
 
 ## Which has been the biggest challenge? 
-Boxing against Pytube.
+Boxing against Pytube ...
 
-
-
-
-
-
+![clideo_editor_3b3d8be796cb4196ad87cbec8cfdbaab](https://github.com/user-attachments/assets/d23c9e3b-3e4f-4931-8dd0-5aed7c380251)
 
 [Context]
 
