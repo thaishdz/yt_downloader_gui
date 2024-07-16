@@ -1,12 +1,14 @@
-# YT Downloader with Pytube & Tkinter
+# YT Downloader 
+
+__Techie Stack__ 💻:
+- Python ([Pytube](https://github.com/pytube/pytube))
+- [Tkinter](https://docs.python.org/es/3/library/tkinter.html) (GUI)
+
 __Status : Blocked__ ⛔
 
-## Why it was blocked?
-The main reason is because *Pytube* is an obsolete library (not updates since 2021)
-Every time YouTube updates its API, things break (logically). 
-One day it works fine, the next it doesn't
+TODO: Put the current gui of the application here
 
-## What were the objectives with __yt_downloader_gui__?
+## Objectives with this side project 🎯
 
 - Learning about the __integration of libraries__ (Pytube & Tkinter)
 - Learning how __library works__ (Pytube)
@@ -15,7 +17,13 @@ One day it works fine, the next it doesn't
 - Learning about __threading__ module
 - Learning __good practices__ (PEP8 - Style Guide for Python Code)
 
-## Which has been the biggest challenge? 
+## Why it was blocked? ⛔
+The main reason is because *Pytube* is an obsolete library (not updates since 2021)
+Every time YouTube updates its API, things break (logically). 
+One day it works fine, the next it doesn't
+
+
+## What has been the biggest challenge? 🗿
 Boxing against Pytube ...
 
 ![clideo_editor_3b3d8be796cb4196ad87cbec8cfdbaab](https://github.com/user-attachments/assets/d23c9e3b-3e4f-4931-8dd0-5aed7c380251)
@@ -27,10 +35,14 @@ the thing is, the Progressive streams are video-audio joined but never have
 the highest resolution (720p instead 1080p), 
 so I had to work with DASH (separate video and audio).
 
+![photo_2024-07-16_21-40-23](https://github.com/user-attachments/assets/73037ab8-cd9c-4a65-8447-7abca4df94a3)
+
+
 Downloading the video and audio per separate, 
 is no problem because then they can be merged with a module called ffmpeg.
 
-[State of my app on that point]
+
+[Status of my app on that point]
 
 I had 2 threads : 
 1. To download the stream itself
@@ -46,7 +58,7 @@ Pytube is not «thread-safe»,
 because of this, it would not be able to make a third thread 
 which unloads a second stream in parallel to the other 2.
 
-## What have you learned?
+## What have you learned? 💡
 
 - How to design and set up an GUI (Tkinter)
 - How streams works
@@ -58,9 +70,8 @@ which unloads a second stream in parallel to the other 2.
 - How the progress bar works and synchronizes with a downloading stream
 
 
-## Future steps or ideas
-
-
-
-
-
+## Next steps or ideas 🚀
+1. Find alternatives to Pytube ([yt-dlp](https://github.com/yt-dlp/yt-dlp) is popular, but its api ... no)
+2. Choose the directory where to save the content
+3. Download only audio from videos
+4. Download playlists
