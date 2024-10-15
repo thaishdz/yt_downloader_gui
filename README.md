@@ -19,42 +19,29 @@ The main reason for halting development is due to the limitations of the *Pytube
   - One day the library works fine, and the next day it doesn't.
 
 
-## What has been the biggest challenge? 🗿
+## What Has Been the Biggest Challenge? 🗿
 Boxing against Pytube ...
 
 ![clideo_editor_3b3d8be796cb4196ad87cbec8cfdbaab](https://github.com/user-attachments/assets/d23c9e3b-3e4f-4931-8dd0-5aed7c380251)
 
-[Context]
+Working with Pytube has been like going toe-to-toe with an unpredictable opponent. One of the most significant challenges has been handling video resolution selection:
 
-I wanted the user could a choose a video resolution,
-the thing is, the Progressive streams are video-audio joined but never have 
-the highest resolution (720p instead 1080p), 
-so I had to work with DASH (separate video and audio).
+🥊 __Progressive vs DASH Streams__: While Progressive streams come with video and audio combined, they are limited to lower resolutions (maxing out at _720p_). For higher resolutions like _1080p_ or above, I had to work with DASH streams, where video and audio are separate files that need to be downloaded and merged.
+
+🥊 __Implementing DASH Stream Handling__: Using __DASH__ required extra steps to manually download the separate video and audio streams, then merge them using tools like `ffmeg`. This added complexity to the code and introduced new challenges, such as managing dependencies and ensuring seamless merging.
+
 
 ![photo_2024-07-16_21-40-23](https://github.com/user-attachments/assets/73037ab8-cd9c-4a65-8447-7abca4df94a3)
 
 
-Downloading the video and audio per separate, 
-is no problem because then they can be merged with a module called ffmpeg.
+🥊 __User Experience Considerations__: Allowing users to choose the resolution meant balancing, simplicity and functionality. I had to desing the application to account for both _Progressive_ and _DASH_ streams while keeping the interface user-friendly.
 
 
-[Status of my app on that point]
-
-I had 2 threads : 
-1. To download the stream itself
-2. To update the progress bar as the stream download progresses
-
-That worked well 👍
-
-[THE PROBLEM]
-
-![image](https://github.com/user-attachments/assets/845cd57a-3366-45f5-bfa5-6d635aeceb97)
-
-Pytube is not «thread-safe»,
-because of this, it would not be able to make a third thread 
-which unloads a second stream in parallel to the other 2.
+Despite these obstacules, figuring out how to deal with different stream types was a rewarding learning experience,deepening my understanding of video formats and programmatic video processing.
 
 ## What have you learned? 💡
+
+![image](https://github.com/user-attachments/assets/845cd57a-3366-45f5-bfa5-6d635aeceb97)
 
 - How to design and set up an GUI (Tkinter)
 - How streams works
