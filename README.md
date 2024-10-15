@@ -4,9 +4,8 @@ __Techie Stack__ 💻:
 - Python ([Pytube](https://github.com/pytube/pytube))
 - [Tkinter](https://docs.python.org/es/3/library/tkinter.html) (GUI)
 
+> [!CAUTION]
 __Status : Blocked__ ⛔
-
-TODO: Put the current gui of the application here
 
 ## Objectives with this side project 🎯
 
