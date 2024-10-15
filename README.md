@@ -71,7 +71,7 @@ To run the project, you’ll need:
 pip install pytube
 ```
 
-## Running the Project ▶️
+### Running the Project ▶️
 
 1. Clone the Repository:
 
