@@ -58,8 +58,3 @@ Despite these obstacules, figuring out how to deal with different stream types w
 2. Choose the directory where to save the content
 3. Download only audio from videos
 4. Download playlists
-
-
-__Techie Stack__ 💻:
-- Python ([Pytube](https://github.com/pytube/pytube))
-- [Tkinter](https://docs.python.org/es/3/library/tkinter.html) (GUI)
