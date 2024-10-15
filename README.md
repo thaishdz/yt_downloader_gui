@@ -1,26 +1,22 @@
-# YT Downloader 
+# Side Project: Youtube Downloader with Pytube & Tinker
 
-__Techie Stack__ 💻:
-- Python ([Pytube](https://github.com/pytube/pytube))
-- [Tkinter](https://docs.python.org/es/3/library/tkinter.html) (GUI)
+This project serves as a learning jorney to deepen my understanding of various Python topics and software development practices
 
 > [!CAUTION]
 __Status : Blocked__ ⛔
 
-## Objectives with this side project 🎯
+## Objectives 🎯
 
-- Learning about the __integration of libraries__ (Pytube & Tkinter)
-- Learning how __library works__ (Pytube)
-- Learning about __GUIs__
-- Learning how __Asynchrony__ works in Python
-- Learning about __threading__ module
-- Learning __good practices__ (PEP8 - Style Guide for Python Code)
-- Reading libraries documentation (yep, I'm not hiding gurl)
+- __Integrating libraries__: Working with external libraries such as [Pytube](https://github.com/pytube/pytube) for downloading Youtube videos and [Tkinter](https://docs.python.org/es/3/library/tkinter.html) for building graphical user interfaces (GUIs).
+- __Mastering Asynchronous Programming__: Learning how to implement asynchrony in Python to avoid blocking operations.
+- __Following Python Best Practices__: Writing code that adheres to [PEP8](https://peps.python.org/pep-0008/), the style guide for Python, to ensure clean and maintainable code.
+- __Reading documentation__: Enhancing my skills in reading and understanding library documentation to fully leverage their features. 
 
-## Why it was blocked? ⛔
-The main reason is because *Pytube* is an obsolete library (not updates since 2021)
-Every time YouTube updates its API, things break (logically). 
-One day it works fine, the next it doesn't
+## Why the Project Was blocked? ⛔
+The main reason for halting development is due to the limitations of the *Pytube* library.
+- __Lack of Maintenance__: Pytube has not been updated since 2011, leading to compatibility issues.
+- __Frequent Breakages__: Whenever Youtube updates its API or makes change to its website, Pytube often breaks. This results in unpredictable behavior:
+  - One day the library works fine, and the next day it doesn't.
 
 
 ## What has been the biggest challenge? 🗿
@@ -75,3 +71,8 @@ which unloads a second stream in parallel to the other 2.
 2. Choose the directory where to save the content
 3. Download only audio from videos
 4. Download playlists
+
+
+__Techie Stack__ 💻:
+- Python ([Pytube](https://github.com/pytube/pytube))
+- [Tkinter](https://docs.python.org/es/3/library/tkinter.html) (GUI)
