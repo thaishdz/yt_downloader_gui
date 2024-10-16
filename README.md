@@ -82,7 +82,7 @@ cd <repository-folder>
 
 2. Run the Script
 ```sh
-python src/app.py
+python ./app.py
 ```
 
 Easy, right? 🤠
