@@ -66,7 +66,6 @@ To run the project, you’ll need:
 
 - Python 3.6+: Make sure you have a compatible version installed.
 - Dependencies: Install the required libraries:
-- 
 ```sh
 pip install pytube
 ```
@@ -84,9 +83,6 @@ cd <repository-folder>
 ```sh
 python ./app.py
 ```
-
-Easy, right? 🤠
-
 ---
 
 ## Contributing 🤝
